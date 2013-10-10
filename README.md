@@ -13,7 +13,7 @@ Use it in any personal or commercial project you want.
 Syntax:
 ========
 
-- Accepts a-z, A-Z, 0-9, and - (hypen)
+- Accepts a-z, A-Z, 0-9, _(underscore), and - (hypen)
 - Uses [HTML Entity](http://www.w3schools.com/html/html_entities.asp) like syntax: `&entity_name;`
 
 ```
