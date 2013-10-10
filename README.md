@@ -69,6 +69,7 @@ converted_text = md.convert(text)
 ```
 
 #### No prefix (just in case you couldn't figure it out :P):
+This isn't suggested, as it will take over the already built in HTML Entities
 ##### In a Django Template:
 `{{ textmd|markdown:"safe,iconfonts(prefix=)" }}`
 
