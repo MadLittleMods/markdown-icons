@@ -12,7 +12,7 @@ Description:
 	- A great pre-made Icon Font is [Font Awesome (GitHub Project)](http://fortawesome.github.io/Font-Awesome/)
 
 Syntax:
-	- Accepts a-z, A-Z, 0-9, and - (hypen)
+	- Accepts a-z, A-Z, 0-9, _ (underscore), and - (hypen)
 	- Uses HTML Entity like syntax
 
 	&icon-html5;
@@ -29,6 +29,7 @@ Example Markdown:
 	&icon-spinner:large,spin; Sorry we have to load...
 Output:
 	I love <i aria-hidden="true" class="icon-html5"></i> and <i aria-hidden="true" class="icon-css3"></i>
+	<i aria-hidden="true" class="icon-spinner icon-large icon-spin"></i> Sorry we have to load...
 	
 
 Installation:
@@ -36,7 +37,7 @@ Installation:
 
 Usage / Setup:
 	Default Prefix is "icon-":
-		In Django Template: 
+		In a Django Template: 
 			{{ textmd|markdown:"safe,iconfonts" }}
 
 		In Python:
@@ -45,7 +46,7 @@ Usage / Setup:
 
 
 	Use a custom Prefix:
-		In Django Template:
+		In a Django Template:
 			{{ textmd|markdown:"safe,iconfonts(prefix=mypref-)" }}
 
 		In Python:
@@ -54,7 +55,7 @@ Usage / Setup:
 
 
 	Use no prefix (just in case you couldn't figure it out :P):
-		In Django Template:
+		In a Django Template:
 			{{ textmd|markdown:"safe,iconfonts(prefix=)" }}
 
 		In Python:
