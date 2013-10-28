@@ -8,6 +8,8 @@ Although I made this to work with any icon font, I have added a `mod` syntax to 
 - You can create your own Icon Fonts using the IcoMoon app: http://icomoon.io/app/
 - A great pre-made Icon Font is [Font Awesome (GitHub Project)](http://fortawesome.github.io/Font-Awesome/)
 
+See the [python markdown documentation](http://pythonhosted.org/Markdown/) for more information.
+
 Use it in any personal or commercial project you want.
 
 Syntax:
