@@ -1,7 +1,9 @@
 markdown-icons (iconfonts.py)
 ==============
 
-Easily display icon fonts in markdown. Just add the css necessary for your font and add this extension.
+Easily display icon fonts in python markdown. Just add the CSS necessary for your font and add this extension. 
+
+This is a 3rd party extension for [Python Markdown](https://pythonhosted.org/Markdown/). You can see a [full list of 3rd party extensions here](https://github.com/waylan/Python-Markdown/wiki/Third-Party-Extensions).
 
 Although I made this to work with any icon font, I have added a `mod` syntax to add more prefixed classes to support [Font Awesome](http://fortawesome.github.io/Font-Awesome/) and its special classes such as `2x, 3x, muted, spin, etc`
 
@@ -22,7 +24,10 @@ Syntax:
 &icon-html5;
 &icon-css3;
 &icon-my-icon;
+```
 
+Mod syntax:
+```
 &icon-html5:2x;
 &icon-quote:3x,muted;
 &icon-spinner:large,spin;
