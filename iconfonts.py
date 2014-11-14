@@ -72,70 +72,70 @@ Use it in any personal or commercial project you want.
 
 import markdown
 
-# Global Vars
-# Capture "&icon-namehere;" or "&icon-namehere:2x;" or "&icon-namehere:2x,muted;"
-# https://www.debuggex.com/r/weK9ehGY0HG6uKrg
-PREFIX = r'icon-'
-ICON_RE_BEGIN = r'&'
-ICON_RE_END = r'(?P<name>[a-zA-Z0-9-]+)(:(?P<mod>[a-zA-Z0-9-]+(,[a-zA-Z0-9-]+)*)){0,1};'
-# This is the full regex we use. Only reason we have pieces above is to easily change the prefix to something custom
-ICON_RE = ICON_RE_BEGIN + PREFIX + ICON_RE_END
-
-class IconFontsPattern(markdown.inlinepatterns.Pattern):
-	
-	def __init__(self, pattern, m, configs):
-		super(IconFontsPattern, self).__init__(pattern, m)
-
-		self.config = configs
-
-	""" Return a <i> element with the necessary classes"""
-	def handleMatch(self, m):
-		d = m.groupdict()
-		
-		el = markdown.util.etree.Element("i")
-
-		modClassesString = ""
-		if(d.get("mod")):
-			modClassesString = " " + ' '.join((self.config['prefix'][0] + c) for c in d.get("mod").split(",") if c)
-
-		el.set('class', self.config['prefix'][0] + d.get("name") + modClassesString)
-		el.set('aria-hidden', 'true') # This is for Accessibility and text-to-speech browsers so they don't try to pronounce it
-		return el
-
 class IconFontsExtension(markdown.Extension):
 	""" IconFonts Extension for Python-Markdown. """
 
-	def __init__(self, configs):
+	def __init__(self, *args, **kwargs):
 		# define default configs
 		self.config = {
-			'prefix': ['icon-', "Custom class prefix."]
+			'prefix': ['icon-', "Custom class prefix."],
+			'base': ['', "Base class added to each icon"]
 		}
 
-		# Override defaults with user settings
-		for key, value in configs:
-			# convert strings to booleans
-			if value == 'True': value = True
-			if value == 'False': value = False
-			if value == 'None': value = None
-
-			self.setConfig(key, value)
-
-		# Change prefix to what they had the in the config
-		changePrefix(self.config['prefix'][0])
+		super(IconFontsExtension, self).__init__(*args, **kwargs)
 
 
 	def extendMarkdown(self, md, md_globals):
-		md.inlinePatterns['iconfonts'] = IconFontsPattern(ICON_RE, md, self.config)
+		# Change prefix to what they had the in the config
+		# Capture "&icon-namehere;" or "&icon-namehere:2x;" or "&icon-namehere:2x,muted;"
+		# https://www.debuggex.com/r/weK9ehGY0HG6uKrg
+		prefix = self.config['prefix'][0]
+		icon_regex_start = r'&'
+		icon_regex_end = r'(?P<name>[a-zA-Z0-9-]+)(:(?P<mod>[a-zA-Z0-9-]+(,[a-zA-Z0-9-]+)*)){0,1};'
+		# This is the full regex we use. Only reason we have pieces above is to easily change the prefix to something custom
+		icon_regex = icon_regex_start + prefix + icon_regex_end
+
+		md.inlinePatterns['iconfonts'] = IconFontsPattern(icon_regex, md, self.config)
 
 		md.registerExtension(self)
 
 
-def makeExtension(configs=None):
-	return IconFontsExtension(configs)
+# http://pythonhosted.org/Markdown/extensions/api.html#makeextension
+def makeExtension(*args, **kwargs):
+	return IconFontsExtension(*args, **kwargs)
 
 
-def changePrefix(prefix):
-	global PREFIX, ICON_RE_BEGIN, ICON_RE_END, ICON_RE
 
-	PREFIX = prefix
-	ICON_RE = ICON_RE_BEGIN + PREFIX + ICON_RE_END
+class IconFontsPattern(markdown.inlinepatterns.Pattern):
+	
+	def __init__(self, pattern, md, config):
+		# Pass the patterna and markdown instance
+		super(IconFontsPattern, self).__init__(pattern, md)
+
+		self.config = config
+
+	""" Return a <i> element with the necessary classes"""
+	def handleMatch(self, match):
+		# The dictionary keys come from named capture groups in the regex
+		match_dict = match.groupdict()
+		
+		# Create the <i> element
+		el = markdown.util.etree.Element("i")
+
+		# Mods are modifier classes. The syntax in the markdown is "&icon-namehere:2x;" and with multiple "&icon-spinner:2x,spin;"
+		mod_classes_string = ""
+		if(match_dict.get("mod")):
+			# Make a string with each modifier like: " icon-2x iconspin"
+			mod_classes_string = " " + ' '.join((self.config['prefix'][0] + c) for c in match_dict.get("mod").split(",") if c)
+
+		base_class = ""
+		if(self.config['base'][0]):
+			base_class = self.config['base'][0] + " "
+
+		icon_class = self.config['prefix'][0] + match_dict.get("name")
+
+		# Add the icon classes to the <i> element
+		el.set('class', base_class + icon_class + mod_classes_string)
+		# This is for accessibility and text-to-speech browsers so they don't try to read it
+		el.set('aria-hidden', 'true')
+		return el
