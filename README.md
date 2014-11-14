@@ -1,5 +1,4 @@
-markdown-icons (iconfonts.py)
-==============
+# markdown-icons (iconfonts.py)
 
 Easily display icon fonts in python markdown. Just add the CSS necessary for your font and add this extension. 
 
@@ -14,8 +13,9 @@ See the [python markdown documentation](http://pythonhosted.org/Markdown/) for m
 
 Use it in any personal or commercial project you want.
 
-Syntax:
-========
+# Current Version: 2.0
+
+# Syntax:
 
 - Accepts a-z, A-Z, 0-9, _(underscore), and - (hypen)
 - Uses [HTML Entity](http://www.w3schools.com/html/html_entities.asp) like syntax: `&entity_name;`
@@ -77,11 +77,25 @@ converted_text = md.convert(text)
 
 #### No prefix (just in case you couldn't figure it out :P):
 This isn't suggested, as it will take over the already built in HTML Entities
-##### In a Django Template:
-`{{ textmd|markdown:"safe,iconfonts(prefix=)" }}`
 
 ##### In Python:
 ```
 md = markdown.Markdown(extensions=['iconfonts(prefix=)'])
 converted_text = md.convert(text)
+```
+
+#### We also now support a `base` option which allows for Bootstrap 3 and FontAwesome 4
+
+##### In Python:
+```
+md = markdown.Markdown(extensions=['iconfonts(base=icon)'])
+converted_text = md.convert(text)
+```
+
+**Input:** `&icon-html5;`
+**Output:** `<i aria-hidden="true" class="icon icon-html5"></i>`
+
+#### Combine options with a comma:
+```
+md = markdown.Markdown(extensions=['iconfonts(prefix=fa-, base=fa)'])
 ```
