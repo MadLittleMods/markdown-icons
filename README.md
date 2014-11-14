@@ -93,6 +93,7 @@ converted_text = md.convert(text)
 ```
 
 **Input:** `&icon-html5;`
+
 **Output:** `<i aria-hidden="true" class="icon icon-html5"></i>`
 
 #### Combine options with a comma:
