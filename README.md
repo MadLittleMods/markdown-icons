@@ -1,4 +1,4 @@
-# markdown-icons (iconfonts.py)
+# markdown-icons (`iconfonts.py`)
 
 Easily display icon fonts in python markdown. Just add the CSS necessary for your font and add this extension. 
 
@@ -47,13 +47,13 @@ I love <i aria-hidden="true" class="icon-html5"></i> and <i aria-hidden="true" c
 <i aria-hidden="true" class="icon-spinner icon-large icon-spin"></i> Sorry we have to load...
 ```
 
-Installation:
-==============
+# Installation:
+
 Just drop it in the extensions folder of the markdown package: `markdown/extensions`
 
 
-Usage / Setup:
-==============
+# Usage / Setup:
+
 #### Default Prefix is "icon-":
 ##### In a Django Template: 
 `{{ textmd|markdown:"safe,iconfonts" }}`
@@ -99,3 +99,9 @@ converted_text = md.convert(text)
 ```
 md = markdown.Markdown(extensions=['iconfonts(prefix=fa-, base=fa)'])
 ```
+
+# How to run the unit tests
+
+ - `pip install markdown`
+ - Install markdown icons. Copy the `iconfonts.py` file into `site-packages/markdown/extensions/`
+ - Navigate to the test directory in CMD/terminal and run `python unit-tests.py -v`
