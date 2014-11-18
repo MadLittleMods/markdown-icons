@@ -69,6 +69,5 @@ with open(os.path.join(BASE_DIR, 'output.txt'), "w") as text_file:
 """
 
 
-
 if __name__ == '__main__':
     unittest.main()
