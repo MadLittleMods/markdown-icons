@@ -93,6 +93,9 @@ class IconFontsExtension(markdown.Extension):
 
 
 	def extendMarkdown(self, md, md_globals):
+
+		md.registerExtension(self)
+
 		# Change prefix to what they had the in the config
 		# Capture "&icon-namehere;" or "&icon-namehere:2x;" or "&icon-namehere:2x,muted;"
 		# https://www.debuggex.com/r/weK9ehGY0HG6uKrg
@@ -103,8 +106,6 @@ class IconFontsExtension(markdown.Extension):
 		icon_regex = icon_regex_start + prefix + icon_regex_end
 
 		md.inlinePatterns['iconfonts'] = IconFontsPattern(icon_regex, md, self.config)
-
-		md.registerExtension(self)
 
 
 # http://pythonhosted.org/Markdown/extensions/api.html#makeextension
