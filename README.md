@@ -13,7 +13,7 @@ See the [python markdown documentation](http://pythonhosted.org/Markdown/) for m
 
 Use it in any personal or commercial project you want.
 
-# Current Version: 2.0
+# Current Version: 2.1
 
 # Syntax:
 
