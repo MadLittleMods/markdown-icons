@@ -2,7 +2,7 @@
 IconFonts Extension for Python-Markdown
 ========================================
 
-Version: 2.0
+Version: 2.1
 
 Description:
 	Use this extension to display icon font icons in python markdown. Just add the css necessary for your font and add this extension.
@@ -83,29 +83,50 @@ class IconFontsExtension(markdown.Extension):
 	""" IconFonts Extension for Python-Markdown. """
 
 	def __init__(self, *args, **kwargs):
+
 		# define default configs
 		self.config = {
 			'prefix': ['icon-', "Custom class prefix."],
 			'base': ['', "Base class added to each icon"]
 		}
 
-		super(IconFontsExtension, self).__init__(*args, **kwargs)
+		# Override defaults with user settings
+		# This is legacy code for versions older than 2.5.1.
+		if len(args):
+			for key, value in args[0]:
+				# convert strings to booleans
+				if value == 'True': value = True
+				if value == 'False': value = False
+				if value == 'None': value = None
+
+				self.setConfig(key, value)
+
+		# Override defaults with user settings
+		# This is not legacy code but is used instead of the super call below because we have to support the legacy version
+		if hasattr(self, 'setConfigs'):
+			self.setConfigs(kwargs)
+
+		
+		# We can use this instead of the legacy for loop to set the config above
+		#super(IconFontsExtension, self).__init__(*args, **kwargs)
 
 
 	def extendMarkdown(self, md, md_globals):
+		config = self.getConfigs();
+		#print("config" + str(config))
 
 		md.registerExtension(self)
 
 		# Change prefix to what they had the in the config
 		# Capture "&icon-namehere;" or "&icon-namehere:2x;" or "&icon-namehere:2x,muted;"
 		# https://www.debuggex.com/r/weK9ehGY0HG6uKrg
-		prefix = self.config['prefix'][0]
+		prefix = config['prefix']
 		icon_regex_start = r'&'
 		icon_regex_end = r'(?P<name>[a-zA-Z0-9-]+)(:(?P<mod>[a-zA-Z0-9-]+(,[a-zA-Z0-9-]+)*)){0,1};'
 		# This is the full regex we use. Only reason we have pieces above is to easily change the prefix to something custom
 		icon_regex = icon_regex_start + prefix + icon_regex_end
 
-		md.inlinePatterns['iconfonts'] = IconFontsPattern(icon_regex, md, self.config)
+		md.inlinePatterns['iconfonts'] = IconFontsPattern(icon_regex, md, config)
 
 
 # http://pythonhosted.org/Markdown/extensions/api.html#makeextension
@@ -124,6 +145,7 @@ class IconFontsPattern(markdown.inlinepatterns.Pattern):
 
 	""" Return a <i> element with the necessary classes"""
 	def handleMatch(self, match):
+
 		# The dictionary keys come from named capture groups in the regex
 		match_dict = match.groupdict()
 		
@@ -134,13 +156,13 @@ class IconFontsPattern(markdown.inlinepatterns.Pattern):
 		mod_classes_string = ""
 		if(match_dict.get("mod")):
 			# Make a string with each modifier like: " icon-2x iconspin"
-			mod_classes_string = " " + ' '.join((self.config['prefix'][0] + c) for c in match_dict.get("mod").split(",") if c)
+			mod_classes_string = " " + ' '.join((self.config['prefix'] + c) for c in match_dict.get("mod").split(",") if c)
 
 		base_class = ""
-		if(self.config['base'][0]):
-			base_class = self.config['base'][0] + " "
+		if(self.config['base']):
+			base_class = self.config['base'] + " "
 
-		icon_class = self.config['prefix'][0] + match_dict.get("name")
+		icon_class = self.config['prefix'] + match_dict.get("name")
 
 		# Add the icon classes to the <i> element
 		el.set('class', base_class + icon_class + mod_classes_string)
