@@ -32,6 +32,44 @@ class TestMDI(unittest.TestCase):
 
         self.assertEqual(converted_text, expected)
 
+    def test_prefix_base_pairs_setting(self):
+        text = 'I also love &fa-spinner:2x,spin:red; &glyphicon-remove::bold;\n&fa-spinner:large,spin; Sorry we have to load...'
+        expected = '<p>I also love <i aria-hidden="true" class="fa fa-spinner fa-2x fa-spin red"></i> <i aria-hidden="true" class="glyphicon glyphicon-remove bold"></i>\n<i aria-hidden="true" class="fa fa-spinner fa-large fa-spin"></i> Sorry we have to load...</p>'
+
+        md = markdown.Markdown(extensions=['iconfonts'],
+                               extension_configs={
+                                   'iconfonts': {
+                                       'prefix': 'icon-',
+                                       'base': 'icon',
+                                       'prefix_base_pairs': {
+                                           'fa-': 'fa',
+                                           'glyphicon-': 'glyphicon',
+                                       }
+                                   }
+                               })
+        converted_text = md.convert(text)
+
+        self.assertEqual(converted_text, expected)
+
+    def test_prefix_base_pairs_setting_with_normal_prefix_and_base_settings(self):
+        text = 'I also love &fa-spinner:2x,spin:red; &glyphicon-remove::bold;\n&icon-spinner:large,spin; Sorry we have to load...'
+        expected = '<p>I also love <i aria-hidden="true" class="fa fa-spinner fa-2x fa-spin red"></i> <i aria-hidden="true" class="glyphicon glyphicon-remove bold"></i>\n<i aria-hidden="true" class="icon icon-spinner icon-large icon-spin"></i> Sorry we have to load...</p>'
+
+        md = markdown.Markdown(extensions=['iconfonts'],
+                               extension_configs={
+                                   'iconfonts': {
+                                       'prefix': 'icon-',
+                                       'base': 'icon',
+                                       'prefix_base_pairs': {
+                                           'fa-': 'fa',
+                                           'glyphicon-': 'glyphicon',
+                                       }
+                                   }
+                               })
+        converted_text = md.convert(text)
+
+        self.assertEqual(converted_text, expected)
+
     def test_custom_prefix(self):
         text = 'I love &mypref-html5; and &mypref-css3;.'
         expected = '<p>I love <i aria-hidden="true" class="mypref-html5"></i> and <i aria-hidden="true" class="mypref-css3"></i>.</p>'
