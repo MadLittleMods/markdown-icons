@@ -3,6 +3,7 @@ import unittest
 import os
 import markdown
 
+
 class TestMDI(unittest.TestCase):
     def test_vanilla(self):
         text = 'I love &icon-html5; and &icon-css3;.'
@@ -57,8 +58,6 @@ class TestMDI(unittest.TestCase):
         converted_text = md.convert(text)
 
         self.assertEqual(converted_text, expected)
-
-
 
 
 """

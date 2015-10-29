@@ -26,7 +26,7 @@ Example Markdown:
 Output:
     I love <i aria-hidden="true" class="icon-html5"></i> and <i aria-hidden="true" class="icon-css3"></i>
     <i aria-hidden="true" class="icon-spinner icon-large icon-spin"></i> Sorry we have to load...
-    
+
 
 Installation:
     Just drop it in the extensions folder of the markdown package. (markdown/extensions).
@@ -34,7 +34,7 @@ Installation:
 
 Usage/Setup:
     Default Prefix is "icon-":
-        In a Django Template: 
+        In a Django Template:
             {{ textmd|markdown:"safe,iconfonts" }}
 
         In Python:
@@ -69,7 +69,7 @@ Usage/Setup:
 
     Combine options with a comma:
         md = markdown.Markdown(extensions=['iconfonts(prefix=fa-, base=fa)'])
-        
+
 
 Copyright 2014 [Eric Eastwood](http://ericeastwood.com/)
 
@@ -78,6 +78,7 @@ Use it in any personal or commercial project you want.
 """
 
 import markdown
+
 
 class IconFontsExtension(markdown.Extension):
     """ IconFonts Extension for Python-Markdown. """
@@ -95,9 +96,12 @@ class IconFontsExtension(markdown.Extension):
         if len(args):
             for key, value in args[0]:
                 # convert strings to booleans
-                if value == 'True': value = True
-                if value == 'False': value = False
-                if value == 'None': value = None
+                if value == 'True':
+                    value = True
+                if value == 'False':
+                    value = False
+                if value == 'None':
+                    value = None
 
                 self.setConfig(key, value)
 
@@ -106,13 +110,11 @@ class IconFontsExtension(markdown.Extension):
         if hasattr(self, 'setConfigs'):
             self.setConfigs(kwargs)
 
-        
         # We can use this instead of the legacy for loop to set the config above
         #super(IconFontsExtension, self).__init__(*args, **kwargs)
 
-
     def extendMarkdown(self, md, md_globals):
-        config = self.getConfigs();
+        config = self.getConfigs()
         #print("config" + str(config))
 
         md.registerExtension(self)
@@ -134,9 +136,7 @@ def makeExtension(*args, **kwargs):
     return IconFontsExtension(*args, **kwargs)
 
 
-
 class IconFontsPattern(markdown.inlinepatterns.Pattern):
-    
     def __init__(self, pattern, md, config):
         # Pass the patterna and markdown instance
         super(IconFontsPattern, self).__init__(pattern, md)
@@ -148,7 +148,7 @@ class IconFontsPattern(markdown.inlinepatterns.Pattern):
 
         # The dictionary keys come from named capture groups in the regex
         match_dict = match.groupdict()
-        
+
         # Create the <i> element
         el = markdown.util.etree.Element("i")
 
