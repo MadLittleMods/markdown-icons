@@ -23,6 +23,15 @@ class TestMDI(unittest.TestCase):
 
         self.assertEqual(converted_text, expected)
 
+    def test_vanilla_user_mod(self):
+        text = 'I also love &icon-spinner:spin:red; &icon-spinner:2x,spin:bold;\n&icon-spinner:large,spin; Sorry we have to load...'
+        expected = '<p>I also love <i aria-hidden="true" class="icon-spinner icon-spin red"></i> <i aria-hidden="true" class="icon-spinner icon-2x icon-spin bold"></i>\n<i aria-hidden="true" class="icon-spinner icon-large icon-spin"></i> Sorry we have to load...</p>'
+
+        md = markdown.Markdown(extensions=['iconfonts'])
+        converted_text = md.convert(text)
+
+        self.assertEqual(converted_text, expected)
+
     def test_custom_prefix(self):
         text = 'I love &mypref-html5; and &mypref-css3;.'
         expected = '<p>I love <i aria-hidden="true" class="mypref-html5"></i> and <i aria-hidden="true" class="mypref-css3"></i>.</p>'
