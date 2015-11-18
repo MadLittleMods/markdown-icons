@@ -135,6 +135,6 @@ converted_text = md.convert(text)
 
 # How to run the unit tests
 
- - Install `Markdown` and `six`: `pip install markdown six`
+ - Install `Markdown`: `pip install markdown`
  - Install markdown icons. Copy the `iconfonts.py` file into `site-packages/markdown/extensions/`
  - Navigate to the test directory in CMD/terminal and run `python unit-tests.py -v`

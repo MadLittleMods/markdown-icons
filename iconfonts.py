@@ -107,7 +107,6 @@ Use it in any personal or commercial project you want.
 
 import markdown
 import re
-import six
 
 
 class IconFontsExtension(markdown.Extension):
@@ -169,7 +168,7 @@ class IconFontsExtension(markdown.Extension):
 		self.add_inline(md, 'iconfonts', IconFontsPattern, icon_regex, config)
 
 		# Register each of the pairings
-		for _prefix, _base in six.iteritems(config['prefix_base_pairs']):
+		for _prefix, _base in config['prefix_base_pairs'].items():
 
 			_prefix_base = _prefix if _prefix[-1] != '-' else _prefix[:-1]
 
