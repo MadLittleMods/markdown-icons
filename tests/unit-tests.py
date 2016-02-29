@@ -3,6 +3,7 @@ import unittest
 import os
 import markdown
 
+
 class TestMDI(unittest.TestCase):
 	def test_vanilla(self):
 		text = 'I love &icon-html5; and &icon-css3;.'
@@ -18,6 +19,55 @@ class TestMDI(unittest.TestCase):
 		expected = '<p>I also love <i aria-hidden="true" class="icon-spinner icon-spin"></i> <i aria-hidden="true" class="icon-spinner icon-2x icon-spin"></i>\n<i aria-hidden="true" class="icon-spinner icon-large icon-spin"></i> Sorry we have to load...</p>'
 
 		md = markdown.Markdown(extensions=['iconfonts'])
+		converted_text = md.convert(text)
+
+		self.assertEqual(converted_text, expected)
+
+	def test_vanilla_user_mod(self):
+		text = 'I also love &icon-spinner:spin:red; &icon-spinner:2x,spin:bold;\n&icon-spinner:large,spin; Sorry we have to load...'
+		expected = '<p>I also love <i aria-hidden="true" class="icon-spinner icon-spin red"></i> <i aria-hidden="true" class="icon-spinner icon-2x icon-spin bold"></i>\n<i aria-hidden="true" class="icon-spinner icon-large icon-spin"></i> Sorry we have to load...</p>'
+
+		md = markdown.Markdown(extensions=['iconfonts'])
+		converted_text = md.convert(text)
+
+		self.assertEqual(converted_text, expected)
+
+	def test_prefix_base_pairs_setting(self):
+		text = 'I also love &fa-spinner:2x,spin:red; &glyphicon-remove::bold;\n&fa-spinner:large,spin; Sorry we have to load...'
+		expected = '<p>I also love <i aria-hidden="true" class="fa fa-spinner fa-2x fa-spin red"></i> <i aria-hidden="true" class="glyphicon glyphicon-remove bold"></i>\n<i aria-hidden="true" class="fa fa-spinner fa-large fa-spin"></i> Sorry we have to load...</p>'
+
+		md = markdown.Markdown(
+			extensions=['iconfonts'],
+			extension_configs={
+				'iconfonts': {
+					'prefix': 'icon-',
+					'base': 'icon',
+					'prefix_base_pairs': {
+						'fa-': 'fa',
+						'glyphicon-': 'glyphicon',
+					}
+				}
+			})
+		converted_text = md.convert(text)
+
+		self.assertEqual(converted_text, expected)
+
+	def test_prefix_base_pairs_setting_with_normal_prefix_and_base_settings(self):
+		text = 'I also love &fa-spinner:2x,spin:red; &glyphicon-remove::bold;\n&icon-spinner:large,spin; Sorry we have to load...'
+		expected = '<p>I also love <i aria-hidden="true" class="fa fa-spinner fa-2x fa-spin red"></i> <i aria-hidden="true" class="glyphicon glyphicon-remove bold"></i>\n<i aria-hidden="true" class="icon icon-spinner icon-large icon-spin"></i> Sorry we have to load...</p>'
+
+		md = markdown.Markdown(
+			extensions=['iconfonts'],
+			extension_configs={
+				'iconfonts': {
+					'prefix': 'icon-',
+					'base': 'icon',
+					'prefix_base_pairs': {
+						'fa-': 'fa',
+						'glyphicon-': 'glyphicon',
+					}
+				}
+			})
 		converted_text = md.convert(text)
 
 		self.assertEqual(converted_text, expected)
@@ -59,8 +109,6 @@ class TestMDI(unittest.TestCase):
 		self.assertEqual(converted_text, expected)
 
 
-
-
 """
 # Save to file
 BASE_DIR = os.path.realpath(os.path.dirname(__file__))
@@ -70,4 +118,4 @@ with open(os.path.join(BASE_DIR, 'output.txt'), "w") as text_file:
 
 
 if __name__ == '__main__':
-    unittest.main()
+	unittest.main()
