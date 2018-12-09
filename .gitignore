@@ -1,6 +1,3 @@
 dist/
 MANIFEST
 tests/__pycache__/
-*.egg-info
-.idea
-venv
