@@ -1,12 +1,12 @@
-from setuptools import setup
+from distutils.core import setup
 
 setup(
     name='markdown-icons',
     description='Easily display icon fonts in markdown.',
-    version="0.1.0",
     py_modules=['iconfonts'],
     install_requires=['markdown', 'six'],
     author='Eric Eastwoord',
+    author_email='contact@ericeastwood.com',
     url='https://github.com/MadLittleMods/markdown-icons',
     keywords='markdown, icons, fontawesome, bootstrap',
     classifiers=[
